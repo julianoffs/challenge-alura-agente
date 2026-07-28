@@ -152,12 +152,11 @@ Ejemplo de una linea del registro:
 
 ## Deploy
 
-La aplicacion esta desplegada y accesible publicamente.
-
-- Enlace: (pegar aca la URL de la app)
-- Captura de pantalla:
+Captura de la aplicacion funcionando (ejecucion local):
 
 ![App funcionando](docs/captura.png)
+
+- Enlace publico: pendiente de publicar
 
 ## Autor
 

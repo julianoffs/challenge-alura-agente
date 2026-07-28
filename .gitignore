@@ -1,0 +1,7 @@
+# la API key no se sube nunca
+.env
+
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

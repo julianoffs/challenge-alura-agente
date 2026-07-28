@@ -80,7 +80,7 @@ Hace falta una API key de Google Gemini, se saca gratis en
 [Google AI Studio](https://aistudio.google.com/app/apikey).
 
 ```bash
-git clone https://github.com/<tu-usuario>/challenge-alura-agente.git
+git clone https://github.com/julianoffs/challenge-alura-agente.git
 cd challenge-alura-agente
 
 python -m venv venv
@@ -145,15 +145,15 @@ Ejemplo de una linea del registro:
 {"fecha": "2026-07-27T18:30:12", "pregunta": "Cual es la politica de devoluciones?", "respuesta": "...", "fuentes": ["Politica_Atencion_Cliente_Devoluciones_Mercado_Central_24h.pdf (pag. 12)"], "segundos": 2.4}
 ```
 
-## Deploy en OCI
+## Deploy
 
-La aplicacion esta corriendo en una maquina virtual de Oracle Cloud.
+La aplicacion esta desplegada y accesible publicamente.
 
-- Enlace: http://<ip-publica>:8501
+- Enlace: (pegar aca la URL de la app)
 - Captura de pantalla:
 
-![App corriendo en OCI](docs/captura_oci.png)
+![App funcionando](docs/captura.png)
 
 ## Autor
 
-<Tu nombre> - Challenge Alura Agente, ONE IA for Tech
+[@julianoffs](https://github.com/julianoffs) - Challenge Alura Agente, ONE IA for Tech

@@ -152,19 +152,11 @@ Ejemplo de una linea del registro:
 
 ## Deploy
 
-La aplicacion esta publicada y funcionando en la nube (Streamlit Community
-Cloud). Cualquiera puede entrar y hacerle preguntas:
+App publicada y funcionando en Streamlit Community Cloud:
 
-**https://challenge-alura-agente-8ae5l366stuavk9tbrnbkp.streamlit.app/**
-
-Captura de la aplicacion funcionando:
+### https://challenge-alura-agente-8ae5l366stuavk9tbrnbkp.streamlit.app/
 
 ![App funcionando](docs/captura.png)
-
-Sobre la eleccion de la plataforma: el desafio sugeria Oracle Cloud (OCI), pero
-la verificacion de la cuenta tardaba mas de lo que tenia disponible, asi que
-publique en Streamlit Community Cloud, que tambien deja la app accesible
-publicamente. El codigo es el mismo y funciona igual en cualquier servidor.
 
 ## Autor
 

@@ -57,7 +57,8 @@ columnas.
 - Python
 - LangChain
 - PyPDF y Pandas para leer los archivos
-- Google Gemini para los embeddings (`gemini-embedding-001`)
+- FastEmbed con el modelo `paraphrase-multilingual-MiniLM-L12-v2` para los
+  embeddings (corre local, sin API)
 - Groq con Llama 3.3 70B para generar las respuestas
 - FAISS como base vectorial
 - Streamlit para la interfaz
@@ -77,10 +78,8 @@ columnas.
 
 ## Como ejecutarlo
 
-Hacen falta dos API keys, las dos gratis:
-
-- [Google AI Studio](https://aistudio.google.com/app/apikey) para los embeddings
-- [Groq](https://console.groq.com/keys) para el modelo que genera las respuestas
+Solo hace falta una API key, gratis, de [Groq](https://console.groq.com/keys).
+Los embeddings corren en la propia maquina, asi que no necesitan clave.
 
 ```bash
 git clone https://github.com/julianoffs/challenge-alura-agente.git
@@ -91,10 +90,9 @@ venv\Scripts\activate          # en Linux o Mac: source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Copiar `.env.example` a `.env` y poner las claves adentro:
+Copiar `.env.example` a `.env` y poner la clave adentro:
 
 ```
-GOOGLE_API_KEY=tu_clave_de_google
 GROQ_API_KEY=tu_clave_de_groq
 ```
 

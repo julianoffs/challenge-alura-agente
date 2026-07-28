@@ -7,6 +7,7 @@ Para levantarla:
 """
 
 import json
+import os
 import time
 from datetime import datetime
 
@@ -37,6 +38,17 @@ Pregunta: {pregunta}
 Respuesta:"""
 
 
+def buscar_clave():
+    """
+    Busca la clave de Groq. En mi PC viene del archivo .env, y cuando la app
+    esta publicada en Streamlit Cloud viene de los "Secrets".
+    """
+    try:
+        return st.secrets["GROQ_API_KEY"]
+    except Exception:
+        return os.environ.get("GROQ_API_KEY", "")
+
+
 @st.cache_resource
 def cargar():
     """Carga la base vectorial y el modelo. Solo se hace una vez."""
@@ -47,7 +59,18 @@ def cargar():
     # Etapa 4: el retriever busca los 6 chunks mas parecidos a la pregunta.
     # Probe con 4 y a veces se quedaba corto, con 6 responde mejor.
     retriever = base.as_retriever(search_kwargs={"k": 6})
-    modelo = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.2)
+    clave = buscar_clave()
+    if not clave:
+        st.error(
+            "Falta la clave GROQ_API_KEY. Si estas corriendo la app en tu "
+            "computadora, ponla en el archivo .env. Si esta publicada en "
+            "Streamlit Cloud, ponla en Settings > Secrets."
+        )
+        st.stop()
+
+    modelo = ChatGroq(
+        model="llama-3.3-70b-versatile", temperature=0.2, api_key=clave
+    )
     return retriever, modelo
 
 

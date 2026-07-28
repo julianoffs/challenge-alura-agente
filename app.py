@@ -26,8 +26,15 @@ ARCHIVO_LOG = "registro_preguntas.jsonl"
 # Esto es para que no invente respuestas (alucinaciones).
 PROMPT = """Eres el asistente virtual de Mercado Central 24h.
 Responde la pregunta usando solamente la informacion del contexto de abajo.
-Si la respuesta no aparece en el contexto, responde exactamente:
+
+Aprovecha todo lo que sirva del contexto, aunque este repartido en varios
+fragmentos o responda solo en parte. El contexto trae fragmentos de distintos
+documentos, asi que quedate con los que hablen del tema de la pregunta e ignora
+los demas.
+
+Solo si el contexto no habla del tema de la pregunta, responde exactamente:
 "No encontre esa informacion en los documentos de Mercado Central 24h."
+
 No inventes datos. Responde en espanol, claro y breve.
 
 Contexto:
@@ -56,9 +63,10 @@ def cargar():
         model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     )
     base = FAISS.load_local("vectorstore", embeddings, allow_dangerous_deserialization=True)
-    # Etapa 4: el retriever busca los 6 chunks mas parecidos a la pregunta.
-    # Probe con 4 y a veces se quedaba corto, con 6 responde mejor.
-    retriever = base.as_retriever(search_kwargs={"k": 6})
+    # Etapa 4: el retriever busca los 10 chunks mas parecidos a la pregunta.
+    # Empece con 4 y se quedaba corto: habia preguntas donde el fragmento bueno
+    # quedaba fuera y el agente contestaba que no sabia. Con 10 los encuentra.
+    retriever = base.as_retriever(search_kwargs={"k": 10})
     clave = buscar_clave()
     if not clave:
         st.error(
@@ -68,8 +76,10 @@ def cargar():
         )
         st.stop()
 
+    # temperature=0 para que la misma pregunta de siempre la misma respuesta.
+    # Con 0.2 a veces contestaba que no encontraba algo que si estaba.
     modelo = ChatGroq(
-        model="llama-3.3-70b-versatile", temperature=0.2, api_key=clave
+        model="llama-3.3-70b-versatile", temperature=0, api_key=clave
     )
     return retriever, modelo
 

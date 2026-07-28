@@ -14,7 +14,8 @@ import streamlit as st
 from dotenv import load_dotenv
 
 from langchain_community.vectorstores import FAISS
-from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_groq import ChatGroq
 
 load_dotenv()
 
@@ -39,11 +40,11 @@ Respuesta:"""
 @st.cache_resource
 def cargar():
     """Carga la base vectorial y el modelo. Solo se hace una vez."""
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
     base = FAISS.load_local("vectorstore", embeddings, allow_dangerous_deserialization=True)
     # Etapa 4: el retriever busca los 4 chunks mas parecidos a la pregunta
     retriever = base.as_retriever(search_kwargs={"k": 4})
-    modelo = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.2)
+    modelo = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.2)
     return retriever, modelo
 
 

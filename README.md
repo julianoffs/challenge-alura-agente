@@ -31,7 +31,7 @@ Usa RAG (Retrieval-Augmented Generation), que basicamente son estos pasos:
 pregunta -> busqueda en FAISS -> fragmentos relevantes
                                         |
                                         v
-                              modelo Gemini -> respuesta + fuentes
+                          modelo Llama (Groq) -> respuesta + fuentes
 ```
 
 El agente siempre muestra de que archivo y de que pagina saco la informacion,
@@ -57,7 +57,8 @@ columnas.
 - Python
 - LangChain
 - PyPDF y Pandas para leer los archivos
-- Google Gemini (embeddings `text-embedding-004` y modelo `gemini-2.0-flash`)
+- Google Gemini para los embeddings (`gemini-embedding-001`)
+- Groq con Llama 3.3 70B para generar las respuestas
 - FAISS como base vectorial
 - Streamlit para la interfaz
 - Oracle Cloud Infrastructure (OCI) para el deploy
@@ -76,8 +77,10 @@ columnas.
 
 ## Como ejecutarlo
 
-Hace falta una API key de Google Gemini, se saca gratis en
-[Google AI Studio](https://aistudio.google.com/app/apikey).
+Hacen falta dos API keys, las dos gratis:
+
+- [Google AI Studio](https://aistudio.google.com/app/apikey) para los embeddings
+- [Groq](https://console.groq.com/keys) para el modelo que genera las respuestas
 
 ```bash
 git clone https://github.com/julianoffs/challenge-alura-agente.git
@@ -88,10 +91,11 @@ venv\Scripts\activate          # en Linux o Mac: source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Copiar `.env.example` a `.env` y poner la clave adentro:
+Copiar `.env.example` a `.env` y poner las claves adentro:
 
 ```
-GOOGLE_API_KEY=tu_clave_aca
+GOOGLE_API_KEY=tu_clave_de_google
+GROQ_API_KEY=tu_clave_de_groq
 ```
 
 Despues:
@@ -116,21 +120,24 @@ que es donde esta el desarrollo paso a paso de cada etapa.
 
 ## Ejemplos de respuestas
 
-**Pregunta:** Que beneficios tiene el programa Cliente VIP Central?
+**Pregunta:** Cuantas unidades de Arroz Integral 1kg hay en el inventario?
 
 **Respuesta:**
-> (pegar aca la respuesta real que devuelve el agente)
+> Hay 45 unidades de Arroz Integral 1kg en el inventario.
 
-Fuentes: FAQ_Mercado_Central_24h.pdf (pag. 5)
+Fuentes: inventario_de_supermercado_latam.xlsx
 
 ---
 
-**Pregunta:** Cuantas unidades de Arroz Integral 1kg hay?
+Tambien probe con algo que no esta en ningun documento, para ver si inventaba:
+
+**Pregunta:** Cuantos empleados tiene la sucursal de Tokio?
 
 **Respuesta:**
-> (pegar aca la respuesta real que devuelve el agente)
+> No encontre esa informacion en los documentos de Mercado Central 24h.
 
-Fuentes: inventario_de_supermercado_latam.xlsx
+Ahi se ve que el agente no alucina: cuando el dato no esta en el contexto lo dice
+en vez de inventarlo.
 
 ## Registro de ejecucion
 

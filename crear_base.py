@@ -7,6 +7,8 @@ Se ejecuta una sola vez:
 """
 
 import os
+import time
+
 import pandas as pd
 from dotenv import load_dotenv
 
@@ -96,8 +98,27 @@ print("Chunks:", len(chunks))
 
 # Etapa 3: convierto cada chunk en un vector y lo guardo en FAISS
 print("\n--- Etapa 3: creando los embeddings (tarda un poco) ---")
-embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
-base = FAISS.from_documents(chunks, embeddings)
+embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+
+# El plan gratuito de Gemini deja hacer 100 embeddings por minuto, y yo tengo
+# muchos mas chunks que eso. Asi que los mando por tandas y espero un minuto
+# entre una y otra, si no me devuelve error 429.
+TANDA = 90
+base = None
+
+for i in range(0, len(chunks), TANDA):
+    grupo = chunks[i:i + TANDA]
+    print(f"  procesando {i + len(grupo)} de {len(chunks)} chunks...")
+
+    if base is None:
+        base = FAISS.from_documents(grupo, embeddings)
+    else:
+        base.add_documents(grupo)
+
+    # si todavia quedan chunks, espero para no pasarme del limite
+    if i + TANDA < len(chunks):
+        time.sleep(62)
+
 base.save_local(CARPETA_BASE)
 
 print("\nListo. La base quedo guardada en la carpeta", CARPETA_BASE)
